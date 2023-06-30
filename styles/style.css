@@ -1,0 +1,9 @@
+body {
+    color: lightblue;
+    background-color: black;
+}
+
+.btn-color {
+    color: lightblue;
+    background-color: rgb(31, 43, 31);
+}
