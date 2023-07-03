@@ -1,12 +1,17 @@
 const form = document.querySelector(".js-definition-form");
 let wordInputField = document.querySelector('[name="word"]');
 let errorField = document.querySelector('.js-error');
+let definitionSection = document.querySelector('.js-definition-data')
 
 function getDefinitionEndpoint(wordToDefine) {
     return `https://api.dictionaryapi.dev/api/v2/entries/en/${wordToDefine}`;
 }
 
-function renderDefinition(definition) { }
+function renderDefinition(definition) {
+    definitionSection.innerHTML = `
+        <h2>${definition}</h2>
+    `;
+ }
 
 function fetchDefinition(wordToDefine) {
     fetch(getDefinitionEndpoint(wordToDefine))
@@ -17,7 +22,7 @@ function fetchDefinition(wordToDefine) {
                 let definition = results[0];
             }
             else {
-                errorField.innerText = `The word ${wordToDefine} does not exist.`;
+                errorField.innerText = `The word ${wordToDefine} does not exist in this Dictionary API.`;
             }
             renderDefinition(response);
             console.log(wordToDefine);
@@ -35,8 +40,7 @@ function formSubmitted(event) {
         fetchDefinition(word);
     }
     else {
-        errorField.innerText = `Enter a word for us to describe. 
-        You may have entered a word that is not in the API Dictionary.`;
+        errorField.innerText = `Enter a word for us to describe.`;
     }
 }
 
