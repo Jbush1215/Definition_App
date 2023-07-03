@@ -15,16 +15,15 @@ function renderDefinition(definition) {
 
 function fetchDefinition(wordToDefine) {
     fetch(getDefinitionEndpoint(wordToDefine))
-        .then((x) => x.json())
-        .then(response => {
-            let results = response.results;
+        .then(x => x.json())
+        .then(results => {
             if (typeof results !== 'undefined' && results.length > 0) {
                 let definition = results[0];
             }
             else {
                 errorField.innerText = `The word ${wordToDefine} does not exist in this Dictionary API.`;
             }
-            renderDefinition(response);
+            renderDefinition(results);
             console.log(wordToDefine);
         })
 }
