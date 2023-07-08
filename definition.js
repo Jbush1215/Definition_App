@@ -11,32 +11,43 @@ function getDefinitionEndpoint(wordToDefine) {
 
 function renderDefinition(definedWord) {
     let meanings = definedWord.meanings;
-    let nouns = meanings[0];
-    let verbs = meanings[1];
-    let nounDefinitions = nouns.definitions;
-    let verbsDefinitions = verbs.definitions;
+    let noun = null, verb = null;
+    for (let mean of meanings) {
+        if (mean.partOfSpeech === 'noun') {
+            noun = mean;
+        }
+        else if (mean.partOfSpeech === 'verb') {
+            verb = mean;
+        }
+    }
+    let nounDefinitions = noun?.definitions;
+    let verbDefinitions = verb?.definitions;
 
     headingSection.innerHTML = `
         <h2>${definedWord.word}</h2>
     `;
-    nounMeaningSection.innerHTML = `
+
+    let html = '';
+
+    html += `
             <p>Noun Meaning definitions:</p>
             <ul>
         `;
     if (Array.isArray(nounDefinitions)) {
         for (let def of nounDefinitions) {
-                nounMeaningSection.innerHTML += `
+                html += `
            <li>${def.definition}</li>
             `;
         }
     }
     else {
-        nounMeaningSection.innerHTML += '<p>Error Rending nounMenaingSection</p>'
+        html += '<p>Error Rending nounMenaingSection</p>'
     };
-    nounMeaningSection.innerHTML += `
+    html += `
             </ul>
         `;
-    console.log(verbsDefinitions) /* Todo */
+    nounMeaningSection.innerHTML = html;
+    console.log(verbDefinitions) /* Todo */
  }
 
 function fetchDefinition(wordToDefine) {
@@ -47,6 +58,8 @@ function fetchDefinition(wordToDefine) {
                 definedWord = results[0];
             }
             else {
+                nounMeaningSection.innerHTML = ``;
+                verbsMeaningSection.innerHTML = ``;
                 errorField.innerText = `The word ${wordToDefine} does not exist in this Dictionary API.`;
             }
             renderDefinition(definedWord);
