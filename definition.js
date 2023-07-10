@@ -31,16 +31,18 @@ function renderDefinition(definedWord) {
 
     if (Array.isArray(nounDefinitions)) {
         html += `
-            <p>Noun Definitions:</p>
-            <ul>
+            <section class='def-border'>
+                <p>Noun Definitions:</p>
+                <ul>
         `;
         for (let def of nounDefinitions) {
-                html += `
-           <li>${def.definition}</li>
+            html += `
+                <li>${def.definition}</li>
             `;
         }
         html += `
-            </ul>
+                </ul>
+            </section>
         `;
     }
     else {
@@ -56,16 +58,18 @@ function renderDefinition(definedWord) {
 
     if (Array.isArray(verbDefinitions)) {
         html1 += `
-            <p>Verb Definitions:</p>
-            <ul>
+            <section class='def-border'>
+                <p>Verb Definitions:</p>
+                <ul>
         `;
         for (let def of verbDefinitions) {
             html1 += `
-           <li>${def.definition}</li>
+                <li>${def.definition}</li>
             `;
         }
         html1 += `
-            </ul>
+                </ul>
+            </section>
         `;
     }
     else {
