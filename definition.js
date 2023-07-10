@@ -3,9 +3,9 @@ let wordInputField = document.querySelector('[name="word"]');
 let errorField = document.querySelector('.js-error');
 let headingSection = document.querySelector('.js-heading-data');
 let nounMeaningSection = document.querySelector('.js-noun-meaning-data')
-let verbsMeaningSection = document.querySelector('.js-verbs-meaning-data')
+let verbMeaningSection = document.querySelector('.js-verb-meaning-data')
 
-function getDefinitionEndpoint(wordToDefine) {
+function getDefinitionEndpoint(wordToDefine) {    //This is the API call
     return `https://api.dictionaryapi.dev/api/v2/entries/en/${wordToDefine}`;
 }
 
@@ -20,54 +20,80 @@ function renderDefinition(definedWord) {
             verb = mean;
         }
     }
+    //Noun Definition Start
     let nounDefinitions = noun?.definitions;
-    let verbDefinitions = verb?.definitions;
 
     headingSection.innerHTML = `
-        <h2>${definedWord.word}</h2>
+        <h2 class="word-heading">${definedWord.word}</h2>
     `;
 
     let html = '';
 
-    html += `
-            <p>Noun Meaning definitions:</p>
+    if (Array.isArray(nounDefinitions)) {
+        html += `
+            <p>Noun Definitions:</p>
             <ul>
         `;
-    if (Array.isArray(nounDefinitions)) {
         for (let def of nounDefinitions) {
                 html += `
            <li>${def.definition}</li>
             `;
         }
-    }
-    else {
-        html += '<p>Error Rending nounMenaingSection</p>'
-    };
-    html += `
+        html += `
             </ul>
         `;
+    }
+    else {
+        html = '';
+    };
     nounMeaningSection.innerHTML = html;
-    console.log(verbDefinitions) /* Todo */
+    //Noun definition end
+
+    //Verb definition start
+    let verbDefinitions = verb?.definitions;
+
+    let html1 = '';
+
+    if (Array.isArray(verbDefinitions)) {
+        html1 += `
+            <p>Verb Definitions:</p>
+            <ul>
+        `;
+        for (let def of verbDefinitions) {
+            html1 += `
+           <li>${def.definition}</li>
+            `;
+        }
+        html1 += `
+            </ul>
+        `;
+    }
+    else {
+        html1 = '';
+    };
+    
+    verbMeaningSection.innerHTML = html1;
  }
 
-function fetchDefinition(wordToDefine) {
-    fetch(getDefinitionEndpoint(wordToDefine))
-        .then(x => x.json())
+function fetchDefinition(wordToDefine) {   //This function processes the word and brings back the results array
+    fetch(getDefinitionEndpoint(wordToDefine)) //Word is sent to be defined
+        .then(x => x.json())  //This formats the results in order for it to be read properly. 
         .then(results => {
             if (typeof results !== 'undefined' && results.length > 0) {
                 definedWord = results[0];
             }
             else {
-                nounMeaningSection.innerHTML = ``;
-                verbsMeaningSection.innerHTML = ``;
+                definedWord = undefined;
+                headingSection.innerHTML = "";
+                nounMeaningSection.innerHTML = '';
+                verbMeaningSection.innerHTML = '';
                 errorField.innerText = `The word ${wordToDefine} does not exist in this Dictionary API.`;
             }
-            renderDefinition(definedWord);
-            console.log(definedWord);
+            renderDefinition(definedWord); //sends the information to be rendered
         })
 }
 
-function formSubmitted(event) {
+function formSubmitted(event) {   //This function takes the word entered in the input and sends it to get the definition and to be processed.
     event.preventDefault();
 
     let word = wordInputField.value.trim();
