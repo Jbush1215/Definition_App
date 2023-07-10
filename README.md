@@ -25,3 +25,7 @@ AS A grade-school teacher
 I WANT TO have an easy and reliable source to provide definitions to our lessons 
 SO THAT I can share this tool with my students at all levels of computer competence. 
 ```
+## Future Improvements
+1. Add synonyms to each definition.
+2. Add a sentence with the word defined in parts of speech.
+3. add origin of the word and possibly translation to different languages.
